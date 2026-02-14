@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CreativeController;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\SiteController;
 
 // Helper Classes
 // Helper Methods
@@ -119,15 +121,15 @@ use App\Http\Controllers\MainController;
 //     return "About Page";
 // })->name('aboutpage');
 
-Route::get('/home', [MainController::class, 'home'])->name('home');
+// Route::get('/home', [MainController::class, 'home'])->name('home');
 
-Route::get('/about', [MainController::class, 'about'])->name('about');
+// Route::get('/about', [MainController::class, 'about'])->name('about');
 
-Route::get('/services', [MainController::class, 'services'])->name('services');
+// Route::get('/services', [MainController::class, 'services'])->name('services');
 
-Route::get('/contact', [MainController::class, 'contact'])->name('contact');
+// Route::get('/contact', [MainController::class, 'contact'])->name('contact');
 
-Route::get('/users/{user}', [MainController::class, 'users'])->name('users');
+// Route::get('/users/{user}', [MainController::class, 'users'])->name('users');
 
 
 
@@ -153,3 +155,14 @@ Route::get('/users/{user}', [MainController::class, 'users'])->name('users');
 // admins/subjects
 // admins/levels
 // admins/messages
+
+// index, teachers, courses, courses/id, contact
+Route::get('/', [SiteController::class, 'index'])->name('index');
+Route::get('/teachers', [SiteController::class, 'teachers'])->name('teachers');
+Route::get('/courses', [SiteController::class, 'courses'])->name('courses');
+Route::get('/courses/{id}', [SiteController::class, 'courses_single'])->name('courses_single');
+Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
+
+
+
+Route::get('/creative', [CreativeController::class, 'index'])->name('creative.index');
