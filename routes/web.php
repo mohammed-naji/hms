@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CreativeController;
+use App\Http\Controllers\FormController;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MainController;
-use App\Http\Controllers\SiteController;
 
 // Helper Classes
 // Helper Methods
@@ -166,3 +170,27 @@ Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
 
 
 Route::get('/creative', [CreativeController::class, 'index'])->name('creative.index');
+
+Route::prefix('business')->name('business.')->group(function () {
+    Route::get('/', [BusinessController::class, 'index'])->name('index');
+    Route::get('/about', [BusinessController::class, 'about'])->name('about');
+    Route::get('/products', [BusinessController::class, 'products'])->name('products');
+    Route::get('/store', [BusinessController::class, 'store'])->name('store');
+});
+
+Route::prefix('blog')->name('blog.')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('index');
+    Route::get('/about', [BlogController::class, 'about'])->name('about');
+    Route::get('/post', [BlogController::class, 'post'])->name('post');
+    Route::get('/contact', [BlogController::class, 'contact'])->name('contact');
+});
+
+Route::prefix('personal')->name('personal.')->group(function () {
+    Route::get('/', [PersonalController::class, 'index'])->name('index');
+    // Route::get('/about', [PersonalController::class, 'about'])->name('about');
+    // Route::get('/post', [PersonalController::class, 'post'])->name('post');
+    // Route::get('/contact', [PersonalController::class, 'contact'])->name('contact');
+});
+
+Route::get('form1', [FormController::class, 'form1'])->name('form1');
+Route::post('form1', [FormController::class, 'form1_data'])->name('form1_data');
