@@ -192,5 +192,11 @@ Route::prefix('personal')->name('personal.')->group(function () {
     // Route::get('/contact', [PersonalController::class, 'contact'])->name('contact');
 });
 
-Route::get('form1', [FormController::class, 'form1'])->name('form1');
-Route::post('form1', [FormController::class, 'form1_data'])->name('form1_data');
+Route::get('form1', [FormController::class, 'form1'])->name('forms.form1');
+Route::post('form1', [FormController::class, 'form1_data']);
+
+Route::get('form2', [FormController::class, 'form2'])->name('forms.form2');
+Route::post('form2', [FormController::class, 'form2_data']);
+
+Route::get('course/add', [FormController::class, 'add_course'])->name('forms.add_course');
+Route::post('course/add', [FormController::class, 'add_course_data']);
