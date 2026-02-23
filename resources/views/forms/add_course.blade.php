@@ -16,12 +16,20 @@
     <div class="container my-5">
         <h1>Add Course</h1>
 
+        {{-- @dump($errors->any()) --}}
+        {{-- @dump($errors->all()) --}}
+
+        {{-- @include('partial.errors') --}}
+
         <form action="{{ route('forms.add_course') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <x-form.input name="title" label="Title" placeholder="Course title" />
-            <x-form.input name="image" type="file" label="Image" />
+            <x-form.input name="title" label="Title" placeholder="Course title" value="{{ old('title') }}"
+                :req="true" />
+            <x-form.input name="image" type="file" label="Image" :req="true" />
+            <img src="" width="120" id="avatar" alt="">
             <x-form.textarea name="content" label="Content" placeholder="Course content" rows="6" />
-            <x-form.input name="duration" label="Duration" placeholder="Course duration" type="number" />
+            <x-form.input name="duration" label="Duration" placeholder="Course duration" type="number"
+                :req="true" />
             <x-form.input name="price" label="Price" placeholder="Course price" type="number" />
             <x-form.input name="sale_price" label="Sale Price" placeholder="Course sale price" type="number" />
             <x-form.select name="instructor" label="Instructor">
@@ -34,6 +42,31 @@
         </form>
     </div>
 
+    <script>
+        // const error_fields = document.querySelectorAll('.is-invalid')
+
+        // error_fields.forEach(el => {
+        //     el.onkeyup = () => {
+        //         if (el.value.length > 2) {
+        //             el.classList.remove('is-invalid')
+        //             el.classList.add('is-valid')
+        //             el.nextElementSibling.classList.add('d-none')
+        //         } else {
+        //             el.classList.add('is-invalid')
+        //             el.nextElementSibling.classList.remove('d-none')
+        //         }
+        //     }
+        // });
+
+        const imageInput = document.querySelector("[name=image]");
+        imageInput.addEventListener("change", function() {
+            const reader = new FileReader();
+            reader.addEventListener("load", () => {
+                document.querySelector("#avatar").src = reader.result;
+            });
+            reader.readAsDataURL(this.files[0]);
+        });
+    </script>
 </body>
 
 </html>

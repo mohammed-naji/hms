@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddCourseRequest;
 use Illuminate\Http\Request;
 
 class FormController extends Controller
@@ -57,15 +58,26 @@ class FormController extends Controller
         return view('forms.add_course');
     }
 
-    function add_course_data(Request $request)
+    function add_course_data(AddCourseRequest $request)
     {
         // Validation
         // 1. Request Validation
         // 2. File Validation
         // 3. Validator Class
-        $request->validate([
-            'title' => 'required'
-        ]);
+
+        // $request->validate([
+        //     // 'title' => 'required|min:2|max:20',
+        //     'title' => ['required', 'min:2', 'max:20'],
+        //     'image' => 'required|image|mimes:png,jpg,jpeg,svg',
+        //     'content' => 'nullable|min:50',
+        //     'duration' => 'required|numeric',
+        //     'price' => 'required|numeric'
+        // ], [
+        //     'title.required' => 'هذا الحقل مطلوب',
+        //     'image.required' => 'بدنا صورتك ي حبيبي'
+        // ]);
+
+        dd($request->validated());
 
         $title = $request->title;
         $image = $request->image;
