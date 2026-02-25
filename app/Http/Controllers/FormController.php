@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddCourseRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class FormController extends Controller
 {
@@ -102,5 +103,59 @@ class FormController extends Controller
         // } else {
         //     dd("Done");
         // }
+    }
+
+    function form3()
+    {
+        return view('forms.form3');
+    }
+
+    function form3_data(Request $request)
+    {
+        // dd($request->file('images'));
+
+        // $name = $request->file('image')->getClientOriginalName();
+        // $name = rand() . '_' . time() . '_' . rand() . '.' . $request->file('image')->getClientOriginalExtension();
+        // 564897987_49746546545_46546545445
+        // $request->file('image')->move(public_path('/uploads'), $name);
+
+        // $request->validate([
+        //     'image' => 'required|image|mimes:png'
+        // ]);
+
+        // $path = $request->file('image')->store('uploads', 'custom');
+
+        $images = [];
+
+        foreach ($request->file('images') as $img) {
+            $images[] = $img->store('uploads', 'custom');
+        }
+
+        // dd($images);
+
+        return view('forms.form3_image', compact('images'));
+    }
+
+    function dropzone()
+    {
+        return view('forms.dropzone');
+    }
+
+    function dropzone_data(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:png,jpg,jpeg,gif|max:5000' // Max 5MB
+        ]);
+
+        $image = $request->file('file');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        // Store the file in the public disk under 'uploads' folder
+        $image->storeAs('uploads', $imageName, 'custom');
+
+        // You can also save file information to the database here
+
+        // File::delete()
+
+        return response()->json(['success' => $imageName]);
     }
 }

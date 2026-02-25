@@ -200,3 +200,9 @@ Route::post('form2', [FormController::class, 'form2_data']);
 
 Route::get('course/add', [FormController::class, 'add_course'])->name('forms.add_course');
 Route::post('course/add', [FormController::class, 'add_course_data']);
+
+Route::get('form3', [FormController::class, 'form3'])->name('forms.form3');
+Route::post('form3', [FormController::class, 'form3_data']);
+
+Route::get('dropzone', [FormController::class, 'dropzone'])->name('forms.dropzone');
+Route::post('dropzone', [FormController::class, 'dropzone_data']);
