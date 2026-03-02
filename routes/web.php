@@ -183,6 +183,7 @@ Route::prefix('blog')->name('blog.')->group(function () {
     Route::get('/about', [BlogController::class, 'about'])->name('about');
     Route::get('/post', [BlogController::class, 'post'])->name('post');
     Route::get('/contact', [BlogController::class, 'contact'])->name('contact');
+    Route::post('/contact', [BlogController::class, 'contact_data']);
 });
 
 Route::prefix('personal')->name('personal.')->group(function () {
