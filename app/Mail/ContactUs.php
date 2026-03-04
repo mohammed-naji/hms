@@ -45,8 +45,12 @@ class ContactUs extends Mailable
      */
     public function attachments(): array
     {
-        return [
-            public_path($this->data['cv'])
-        ];
+        if (isset($this->data['cv'])) {
+            return [
+                public_path($this->data['cv'])
+            ];
+        }
+
+        return [];
     }
 }

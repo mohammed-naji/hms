@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CreativeController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\SiteController;
@@ -207,3 +208,6 @@ Route::post('form3', [FormController::class, 'form3_data']);
 
 Route::get('dropzone', [FormController::class, 'dropzone'])->name('forms.dropzone');
 Route::post('dropzone', [FormController::class, 'dropzone_data']);
+
+
+Route::get('/invitations', [InvitationController::class, 'invitations'])->name('invitations');
