@@ -211,3 +211,4 @@ Route::post('dropzone', [FormController::class, 'dropzone_data']);
 
 
 Route::get('/invitations', [InvitationController::class, 'invitations'])->name('invitations');
+Route::post('/invitations', [InvitationController::class, 'send_invitations']);

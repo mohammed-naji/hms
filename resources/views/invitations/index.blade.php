@@ -22,9 +22,14 @@
             color: #fff !important;
         }
     </style>
+
 </head>
 
 <body>
+
+    <noscript>
+        <p>بالله عليك فعل الجافا سكربت</p>
+    </noscript>
 
     <div class="container my-5">
 
@@ -50,6 +55,11 @@
 
             </tbody>
         </table>
+        <div class="text-end mt-4">
+            <button class="btn btn-success btn-lg px-4 send-inv"> <i class="far fa-paper-plane"></i> <span>إرسال
+                    الدعوات</span>
+            </button>
+        </div>
     </div>
 
     <!-- Modal -->
@@ -77,7 +87,7 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/@flasher/flasher@2.2.0/dist/flasher.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <script>
         const btn = document.querySelector('.btn-save')
@@ -88,8 +98,8 @@
         const myModal = new bootstrap.Modal(myModalElement);
 
         let prev_name, prev_email = '';
-
         let counter = 1;
+
         btn.onclick = () => {
             if (in_name.value.length == 0) {
                 in_name.classList.add('is-invalid')
@@ -110,7 +120,6 @@
                     <td>${in_email.value}</td>
                     <td>
                         <a href="#" class="btn btn-sm btn-primary edit"><i class="fas fa-edit"></i></a>
-                        <a href="#" class="btn btn-sm btn-warning cancel d-none"><i class="fas fa-times"></i></a>
                         <a href="#" class="btn btn-sm btn-danger delete"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>`;
@@ -122,6 +131,8 @@
                 in_name.value = '';
                 in_email.value = '';
                 counter++;
+
+                saveData();
             }
         }
 
@@ -135,6 +146,7 @@
                 let tr = e.target.closest('tr')
 
                 if (e.target.closest('.edit').classList.contains('btn-primary')) {
+                    // Edit Mode
                     tr.querySelector('td:nth-child(2)').contentEditable = true;
                     tr.querySelector('td:nth-child(2)').focus()
                     tr.querySelector('td:nth-child(3)').contentEditable = true;
@@ -145,17 +157,26 @@
                     e.target.closest('.edit').classList.replace('btn-primary', 'btn-success')
                     e.target.closest('.edit').querySelector('i').classList.replace('fa-edit', 'fa-check')
 
-                    tr.querySelector('.delete').classList.add('d-none')
-                    tr.querySelector('.cancel').classList.remove('d-none')
+                    tr.querySelector('.delete i').classList.replace('fa-trash', 'fa-times')
+                    tr.querySelector('.delete').classList.replace('btn-danger', 'btn-warning')
+                    tr.querySelector('.delete').classList.replace('delete', 'cancel')
+                    // tr.querySelector('.cancel').classList.remove('d-none')
                 } else {
+                    // Save After Edit
                     tr.querySelector('td:nth-child(2)').contentEditable = false;
                     tr.querySelector('td:nth-child(3)').contentEditable = false;
 
                     e.target.closest('.edit').classList.replace('btn-success', 'btn-primary')
                     e.target.closest('.edit').querySelector('i').classList.replace('fa-check', 'fa-edit')
 
-                    tr.querySelector('.delete').classList.remove('d-none')
-                    tr.querySelector('.cancel').classList.add('d-none')
+                    tr.querySelector('.cancel i').classList.replace('fa-times', 'fa-trash')
+                    tr.querySelector('.cancel').classList.replace('btn-warning', 'btn-danger')
+                    tr.querySelector('.cancel').classList.replace('cancel', 'delete')
+
+                    // tr.querySelector('.delete').classList.remove('d-none')
+                    // tr.querySelector('.cancel').classList.add('d-none')
+
+                    saveData()
                 }
 
             }
@@ -163,6 +184,7 @@
             if (e.target.closest('.delete')) {
                 if (confirm('Are you sure?!')) {
                     e.target.closest('tr').remove()
+                    saveData()
                 }
             }
 
@@ -178,12 +200,116 @@
                 tr.querySelector('td:nth-child(2)').textContent = prev_name;
                 tr.querySelector('td:nth-child(3)').textContent = prev_email;
 
-                tr.querySelector('.delete').classList.remove('d-none')
-                tr.querySelector('.cancel').classList.add('d-none')
+                // tr.querySelector('.delete').classList.remove('d-none')
+                // tr.querySelector('.cancel').classList.add('d-none')
+
+                tr.querySelector('.cancel i').classList.replace('fa-times', 'fa-trash')
+                tr.querySelector('.cancel').classList.replace('btn-warning', 'btn-danger')
+                tr.querySelector('.cancel').classList.replace('cancel', 'delete')
 
                 tr.querySelector('.edit').classList.replace('btn-success', 'btn-primary')
                 tr.querySelector('.edit i').classList.replace('fa-check', 'fa-edit')
             }
+        }
+
+        function saveData() {
+            let users = [];
+
+            tbody.querySelectorAll('tr').forEach(tr => {
+                users.push({
+                    name: tr.querySelector('td:nth-child(2)').textContent,
+                    email: tr.querySelector('td:nth-child(3)').textContent
+                })
+            });
+
+            // localStorage.setItem('users', users)
+            localStorage.setItem('users', JSON.stringify(users))
+            // console.log(JSON.stringify(items));
+        }
+
+        loadData();
+
+        function loadData() {
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            users.forEach(user => {
+                let item = `<tr>
+                    <td>${counter}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-primary edit"><i class="fas fa-edit"></i></a>
+                        <a href="#" class="btn btn-sm btn-danger delete"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>`;
+
+                tbody.insertAdjacentHTML('beforeend', item);
+                counter++
+            })
+        }
+
+
+        // Send Ajax request
+        const send_btn = document.querySelector('.send-inv')
+
+        send_btn.onclick = () => {
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // xhr => XMLHttpRequest
+
+            // let xhr = new XMLHttpRequest();
+
+            // Ajax method
+            // 1. Pure JS => xhr
+            // 2. jQuery
+            // 3. fetch
+            // 4. axios
+
+            send_btn.disabled = true
+            send_btn.classList.add('disabled')
+
+            axios.post("{{ route('invitations') }}", {
+                    users
+                })
+                .then((res) => {
+                    if (res.data.status) {
+                        flasher.success(res.data.message)
+                    } else {
+                        flasher.error(res.data.message)
+                    }
+
+                }).catch((err) => {
+                    flasher.error(err)
+
+                }).finally(() => {
+                    send_btn.disabled = false
+                    send_btn.classList.remove('disabled')
+
+                });
+
+            // fetch("{{ route('invitations') }}", {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'X-CSRF-TOKEN': "{{ csrf_token() }}",
+            //             'Accept': 'application/json'
+            //         },
+            //         body: JSON.stringify({
+            //             users
+            //         })
+            //     })
+            //     .then(res => res.json())
+            //     .then((res) => {
+            //         if (res.status) {
+            //             flasher.success(res.message)
+            //         } else {
+            //             flasher.error(res.message)
+            //         }
+            //         send_btn.disabled = false
+            //         send_btn.classList.remove('disabled')
+            //     }).catch((err) => {
+            //         flasher.error(err)
+            //     });
+
         }
     </script>
 </body>
