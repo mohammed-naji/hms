@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendInvitation;
 use App\Mail\Invitation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -18,9 +19,13 @@ class InvitationController extends Controller
         // dd($request->all());
         $users = $request->users;
 
-        foreach ($users as $user) {
-            Mail::to($user['email'])->send(new Invitation($user));
-        }
+        // foreach ($users as $index => $user) {
+        //     // Mail::to($user['email'])->send(new Invitation($user));
+        //     // Mail::to($user['email'])->later($index * 5, new Invitation($user));
+        //     Mail::to($user['email'])->send((new Invitation($user))->delay($index * 5));
+        // }
+
+        // SendInvitation::dispatch($users);
 
         return response()->json([
             'status' => true,
