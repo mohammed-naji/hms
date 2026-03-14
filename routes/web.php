@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CreativeController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\InvitationController;
@@ -165,8 +166,8 @@ use Illuminate\Support\Facades\Route;
 // index, teachers, courses, courses/id, contact
 Route::get('/', [SiteController::class, 'index'])->name('index');
 Route::get('/teachers', [SiteController::class, 'teachers'])->name('teachers');
-Route::get('/courses', [SiteController::class, 'courses'])->name('courses');
-Route::get('/courses/{id}', [SiteController::class, 'courses_single'])->name('courses_single');
+// Route::get('/courses', [SiteController::class, 'courses'])->name('courses');
+// Route::get('/courses/{id}', [SiteController::class, 'courses_single'])->name('courses_single');
 Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
 
 
@@ -213,3 +214,22 @@ Route::post('dropzone', [FormController::class, 'dropzone_data']);
 
 Route::get('/invitations', [InvitationController::class, 'invitations'])->name('invitations');
 Route::post('/invitations', [InvitationController::class, 'send_invitations']);
+
+
+// CRUD
+// // Create
+// Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
+// Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
+
+// // Read
+// Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+// Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
+
+// // Update
+// Route::get('courses/{id}/edit', [CourseController::class, 'edit'])->name('courses.edit');
+// Route::match(['put', 'patch'], '/courses/{id}', [CourseController::class, 'update'])->name('courses.update');
+
+// // Delete
+// Route::delete('courses/{id}', [CourseController::class, 'destroy'])->name('courses.destroy');
+
+Route::resource('courses', CourseController::class);

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
     {
         // $developer = "Mohammed Naji";
         View::share('developer', 'Mohammed Naji');
+        Schema::defaultStringLength(191);
     }
 }
