@@ -6,6 +6,7 @@ use App\Http\Requests\CourseRequest;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class CourseController extends Controller
 {
@@ -22,7 +23,12 @@ class CourseController extends Controller
         // $courses = DB::table('courses')->get();
 
         // eloquent
-        $courses = Course::all();
+        // $courses = Course::all();
+
+        // $courses = Course::orderBy('id', 'desc')->get();
+        $courses = Course::latest()->get();
+
+        // select * from courses order by id desc
 
         return view('courses.index', compact('courses'));
     }
@@ -43,17 +49,38 @@ class CourseController extends Controller
 
         $path = $request->file('image')->store('uploads', 'custom');
 
-        $course = new Course();
-        $course->title = $request->title;
-        $course->image = $path;
-        $course->instructor = $request->instructor;
-        $course->price = $request->price;
-        $course->sale_price = $request->sale_price;
-        $course->hours = $request->hours;
-        $course->content = $request->content;
-        $course->save();
+        // PHP new object
+        // $course = new Course();
+        // $course->title = $request->title;
+        // $course->image = $path;
+        // $course->instructor = $request->instructor;
+        // $course->price = $request->price;
+        // $course->sale_price = $request->sale_price;
+        // $course->hours = $request->hours;
+        // $course->content = $request->content;
+        // $course->save();
 
-        return redirect()->route('courses.index');
+        // PHP Model Class
+        Course::create([
+            'title' => $request->title,
+            'image' => $path,
+            'instructor' => $request->instructor,
+            'price' => $request->price,
+            'sale_price' => $request->sale_price,
+            'hours' => $request->hours,
+            'content' => $request->content,
+        ]);
+
+        // with
+        // with
+        // with
+
+        flash()->success('Course created successfully!');
+
+        return redirect()
+            ->route('courses.index');
+        // ->with('msg', 'Courses added successfully')
+        // ->with('class', 'bg-teal-400');
     }
 
     /**
@@ -61,7 +88,7 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
-        //
+        dd('sssss');
     }
 
     /**
@@ -83,8 +110,23 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Course $course)
     {
-        //
+        // $course = Course::findOrFail($id);
+        // $course = Course::where('id', $id)->first();
+
+        // dd($course->title);
+
+        // php pure
+        // unlink(public_path('uploads/ss.png'));
+
+        File::delete(public_path($course->image));
+
+        $course->delete();
+
+        flash()->success('Course deleted successfully!');
+
+        return redirect()
+            ->route('courses.index');
     }
 }
