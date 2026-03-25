@@ -14,6 +14,10 @@
         class="form-control @error($name) is-invalid @enderror " name="{{ $name }}"
         {{ $attributes->except('label') }}>
 
+    @if (isset($type) && $type == 'file' && isset($value))
+        <img width="80" src="{{ asset($value) }}" alt="">
+    @endif
+
     @error($name)
         <small class="text-danger">{{ $message }}</small>
     @enderror

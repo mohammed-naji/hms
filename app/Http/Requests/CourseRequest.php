@@ -21,9 +21,10 @@ class CourseRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->method());
         return [
             'title' => 'required',
-            'image' => 'required',
+            'image' => $this->method() == 'POST' ? 'required' : 'nullable',
             'instructor' => 'required',
             'price' => 'required',
             'hours' => 'required',

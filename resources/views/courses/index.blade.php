@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>All Courses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -94,9 +97,12 @@
                                 {{ $course->updated_at->diffForHumans() }}
                             </td>
                             <td class="px-6 py-4">
-                                <a href="" class="bg-green-500 text-white px-2 text-xs p-1 rounded"><i
+                                <a href="{{ route('courses.show', $course->id) }}"
+                                    class="bg-green-500 text-white px-2 text-xs p-1 rounded"><i
                                         class="fas fa-eye"></i></a>
-                                <a href="" class="bg-blue-500 text-white px-2 text-xs p-1 rounded"><i
+                                <a data-bs-toggle="modal" data-bs-target="#editCourse{{ $course->id }}"
+                                    href="{{ route('courses.edit', $course->id) }}"
+                                    class="bg-blue-500 text-white px-2 text-xs p-1 rounded"><i
                                         class="fas fa-edit"></i></a>
                                 {{-- <a href="{{ route('courses.destroy', $course->id) }}"
                                     class="bg-red-500 text-white px-2 text-xs p-1 rounded"><i
@@ -111,6 +117,46 @@
                                         class="bg-red-500 text-white px-2 text-xs p-1 rounded"><i
                                             class="fas fa-trash"></i></button> --}}
                                 </form>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="editCourse{{ $course->id }}" tabindex="-1"
+                                    aria-labelledby="editCourse{{ $course->id }}Label" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Course <span
+                                                        class="text-danger">{{ $course->title }}</span></h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route('courses.update', $course->id) }}"
+                                                    method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('put')
+
+                                                    <x-form.input name="title" label="Title"
+                                                        value="{{ $course->title }}" />
+                                                    <x-form.input name="image" label="Image" type="file"
+                                                        value="{{ $course->image }}" />
+                                                    <x-form.input name="instructor" label="Instructor"
+                                                        value="{{ $course->instructor }}" />
+                                                    <x-form.input name="price" label="Price" type="number"
+                                                        value="{{ $course->price }}" />
+                                                    <x-form.input name="sale_price" label="Sale Price" type="number"
+                                                        value="{{ $course->sale_price }}" />
+                                                    <x-form.input name="hours" label="Hours" type="number"
+                                                        value="{{ $course->hours }}" />
+                                                    <x-form.textarea name="content" label="Content"
+                                                        rows="7">{{ $course->content }}</x-form.textarea>
+
+                                                    <button class="btn btn-success">
+                                                        Update Course</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -128,7 +174,9 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+    </script>
     <script>
         const delete_btns = document.querySelectorAll('.btn-delete')
 

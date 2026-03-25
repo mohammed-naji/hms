@@ -7,6 +7,7 @@ use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use PHPUnit\Framework\Constraint\Count;
 
 class CourseController extends Controller
 {
@@ -86,25 +87,46 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Course $course)
     {
-        dd('sssss');
+        $next = Course::where('id', '>', $course->id)->first();
+        $prev = Course::where('id', '<', $course->id)->latest()->first();
+
+        return view('courses.show', compact('course', 'next', 'prev'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Course $course)
     {
-        //
+        return view('courses.edit', compact('course'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CourseRequest $request, Course $course)
     {
-        //
+        if ($request->hasFile('image')) {
+            File::delete(public_path($course->image));
+            $path = $request->file('image')->store('uploads', 'custom');
+        }
+
+        $course->update([
+            'title' => $request->title,
+            'image' => $path ?? $course->image,
+            'instructor' => $request->instructor,
+            'price' => $request->price,
+            'sale_price' => $request->sale_price,
+            'hours' => $request->hours,
+            'content' => $request->content,
+        ]);
+
+        flash()->success('Course updated successfully!');
+
+        return redirect()
+            ->route('courses.index');
     }
 
     /**
