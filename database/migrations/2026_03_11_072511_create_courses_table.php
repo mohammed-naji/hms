@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('sale_price')->nullable();
             $table->integer('hours');
             $table->text('content');
+            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

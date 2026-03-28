@@ -67,6 +67,19 @@
             {{ $course->content }}
         </div>
 
+        <hr class="my-6">
+        <h2 class="text-center font-semibold">Related Courses</h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3">
+            @foreach ($related as $item)
+                <div>
+                    <img src="{{ $item->image }}" alt="">
+                    <h2><a href="{{ route('courses.show', $item->id) }}">{{ $item->title }}</a></h2>
+                </div>
+            @endforeach
+
+        </div>
+
     </div>
 
 

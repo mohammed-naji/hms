@@ -45,4 +45,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    function bank_account()
+    {
+        return $this->hasOne(BankAccount::class)->withDefault([
+            'serial' => '-'
+        ]);
+    }
 }

@@ -54,6 +54,9 @@
                             Instructor
                         </th>
                         <th scope="col" class="px-6 py-3 font-medium">
+                            Category
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
                             Created At
                         </th>
                         <th scope="col" class="px-6 py-3 font-medium">
@@ -87,6 +90,9 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{ $course->instructor }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $course->category->title }}
                             </td>
                             <td class="px-6 py-4">
                                 {{-- {{ $course->created_at->toDateString() }} --}}

@@ -16,7 +16,6 @@ class CourseController extends Controller
      */
     public function index()
     {
-
         // plain sql
         // $courses = DB::select('select * from courses');
 
@@ -92,7 +91,13 @@ class CourseController extends Controller
         $next = Course::where('id', '>', $course->id)->first();
         $prev = Course::where('id', '<', $course->id)->latest()->first();
 
-        return view('courses.show', compact('course', 'next', 'prev'));
+        $related = Course::where('category_id', $course->category_id)
+            ->where('id', '!=', $course->id)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('courses.show', compact('course', 'next', 'prev', 'related'));
     }
 
     /**

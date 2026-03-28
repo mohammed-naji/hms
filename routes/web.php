@@ -8,6 +8,7 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\RelationController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Date;
@@ -233,3 +234,6 @@ Route::post('/invitations', [InvitationController::class, 'send_invitations']);
 // Route::delete('courses/{id}', [CourseController::class, 'destroy'])->name('courses.destroy');
 
 Route::resource('courses', CourseController::class);
+
+Route::get('/users', [RelationController::class, 'users']);
+Route::get('/account/{bank_account}', [RelationController::class, 'account']);

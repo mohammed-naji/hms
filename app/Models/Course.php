@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Course extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
     // protected $fillable = [
     //     'title',
     //     'image',
@@ -20,5 +21,12 @@ class Course extends Model
 
     protected $guarded = [];
 
+    protected $with = ['category'];
+
     protected $casts = [];
+
+    function category()
+    {
+        return $this->belongsTo(Category::class)->withDefault();
+    }
 }
