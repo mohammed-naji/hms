@@ -237,3 +237,5 @@ Route::resource('courses', CourseController::class);
 
 Route::get('/users', [RelationController::class, 'users']);
 Route::get('/account/{bank_account}', [RelationController::class, 'account']);
+
+Route::get('/category/{category}', [RelationController::class, 'category'])->name('category.show');

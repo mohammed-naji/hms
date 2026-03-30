@@ -29,4 +29,9 @@ class Course extends Model
     {
         return $this->belongsTo(Category::class)->withDefault();
     }
+
+    function getFinalPriceAttribute()
+    {
+        return $this->sale_price ? $this->sale_price : $this->price;
+    }
 }

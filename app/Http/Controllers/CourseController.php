@@ -26,7 +26,10 @@ class CourseController extends Controller
         // $courses = Course::all();
 
         // $courses = Course::orderBy('id', 'desc')->get();
-        $courses = Course::latest()->get();
+        // $courses = Course::latest()->get();
+        $courses = Course::latest()->paginate(10);
+        // $courses = Course::latest()->simplePaginate(10);
+        // dd($courses);
 
         // select * from courses order by id desc
 

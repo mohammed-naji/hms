@@ -51,6 +51,9 @@
                             Price
                         </th>
                         <th scope="col" class="px-6 py-3 font-medium">
+                            Price with VAT (15%)
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
                             Instructor
                         </th>
                         <th scope="col" class="px-6 py-3 font-medium">
@@ -89,10 +92,14 @@
 
                             </td>
                             <td class="px-6 py-4">
+                                ${{ vat($course->final_price) }}
+                            </td>
+                            <td class="px-6 py-4">
                                 {{ $course->instructor }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $course->category->title }}
+                                <a
+                                    href="{{ route('category.show', $course->category->slug) }}">{{ $course->category->title }}</a>
                             </td>
                             <td class="px-6 py-4">
                                 {{-- {{ $course->created_at->toDateString() }} --}}
@@ -174,8 +181,12 @@
                     @endforelse
                 </tbody>
             </table>
-        </div>
 
+
+        </div>
+        <div class="my-6">
+            {{ $courses->links() }}
+        </div>
     </div>
 
 

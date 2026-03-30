@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BankAccount;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -23,5 +24,12 @@ class RelationController extends Controller
     function account(BankAccount $bank_account)
     {
         dd($bank_account->user->name);
+    }
+
+    function category(Category $category)
+    {
+        $category->load('courses');
+
+        return view('relations.category', compact('category'));
     }
 }
